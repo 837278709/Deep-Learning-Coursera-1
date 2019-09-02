@@ -78,7 +78,8 @@ with tf.Session() as test:
     A_prev = tf.placeholder("float", [3, 4, 4, 6])
     X = np.random.randn(3, 4, 4, 6)
     A = identity_block(A_prev, f = 2, filters = [2, 4, 6], stage = 1, block = 'a')
-    test.run(tf.global_variables_initializer())
+    va = tf.global_variables_initializer()
+    test.run(va)
     out = test.run([A], feed_dict={A_prev: X, K.learning_phase(): 0})
     print("out = " + str(out[0][1][1][0]))
 
@@ -304,18 +305,3 @@ model.summary()
 plot_model(model, to_file='model.png')
 SVG(model_to_dot(model).create(prog='dot', format='svg'))
 
-
-# <font color='blue'>
-# **What you should remember:**
-# - Very deep "plain" networks don't work in practice because they are hard to train due to vanishing gradients.  
-# - The skip-connections help to address the Vanishing Gradient problem. They also make it easy for a ResNet block to learn an identity function. 
-# - There are two main type of blocks: The identity block and the convolutional block. 
-# - Very deep Residual Networks are built by stacking these blocks together.
-
-# ### References 
-# 
-# This notebook presents the ResNet algorithm due to He et al. (2015). The implementation here also took significant inspiration and follows the structure given in the github repository of Francois Chollet: 
-# 
-# - Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun - [Deep Residual Learning for Image Recognition (2015)](https://arxiv.org/abs/1512.03385)
-# - Francois Chollet's github repository: https://github.com/fchollet/deep-learning-models/blob/master/resnet50.py
-# 
